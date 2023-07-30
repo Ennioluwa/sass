@@ -1,20 +1,20 @@
 "use client";
 
-import { Menu } from "lucide-react";
-import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
-import { getApiLimitCount } from "@/lib/api-limit";
+import { Menu } from "lucide-react";
 
-interface MobileSidebarProps {
-  apiLimitCount: number;
-}
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Sidebar from "./Sidebar";
 
-const MobileSidebar: React.FC<MobileSidebarProps> = async ({
+export const MobileSidebar = ({
   apiLimitCount = 0,
+  isPro = false,
+}: {
+  apiLimitCount: number;
+  isPro: boolean;
 }) => {
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -23,6 +23,9 @@ const MobileSidebar: React.FC<MobileSidebarProps> = async ({
   if (!isMounted) {
     return null;
   }
+
+  if (isPro) return null;
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -31,10 +34,8 @@ const MobileSidebar: React.FC<MobileSidebarProps> = async ({
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
-        <Sidebar apiLimitCount={apiLimitCount} />
+        <Sidebar isPro={isPro} apiLimitCount={apiLimitCount} />
       </SheetContent>
     </Sheet>
   );
 };
-
-export default MobileSidebar;
